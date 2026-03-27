@@ -35,52 +35,58 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// 主界面：满足实验要求 深色背景 + 绿色强调色
 @Composable
 fun BusinessCardApp() {
-    val bgColor = Color(0xFF073042)
-    val accentColor = Color(0xFF3DDC84)
+    val backgroundColor = Color(0xFF073042)
+    val highlightColor = Color(0xFF3DDC84)
 
     Column(
         modifier = Modifier
-            .fillMaxSize() // 已修复为 fillMaxSize()
-            .background(bgColor)
-            .padding(all = 16.dp),
+            .fillMaxSize()
+            .background(backgroundColor)
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+        // 顶部：头像 + 姓名 + 职位
         CardTop(
             name = "彭静怡",
             title = "Android 开发者",
-            accentColor = accentColor
+            highlightColor = highlightColor
         )
 
+        // 底部：联系方式
         CardBottom(
             phone = "138 0000 0000",
             email = "PENGJINGYI@example.com",
             social = "@PENGJINGYI",
-            accentColor = accentColor
+            highlightColor = highlightColor
         )
     }
 }
 
+// 顶部卡片组件（头像、姓名、职位）
 @Composable
-fun CardTop(name: String, title: String, accentColor: Color) {
+fun CardTop(name: String, title: String, highlightColor: Color) {
     Column(
         modifier = Modifier.padding(top = 60.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            imageVector = Icons.Default.Phone,
+        // 圆形头像（实验要求：圆形裁剪）
+        Image(
+            painter = painterResource(id = R.drawable.my_avatar),
             contentDescription = "头像",
             modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape)
                 .background(Color.LightGray),
-            tint = Color.White
+            contentScale = ContentScale.Crop
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // 姓名（大号白色粗体）
         Text(
             text = name,
             color = Color.White,
@@ -90,42 +96,62 @@ fun CardTop(name: String, title: String, accentColor: Color) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        // 职位（绿色）
         Text(
             text = title,
-            color = accentColor,
+            color = highlightColor,
             fontSize = 18.sp
         )
     }
 }
 
+// 底部联系方式区域
 @Composable
-fun CardBottom(phone: String, email: String, social: String, accentColor: Color) {
+fun CardBottom(phone: String, email: String, social: String, highlightColor: Color) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 60.dp)
     ) {
-        ContactRow(icon = Icons.Default.Phone, info = phone, accentColor = accentColor)
+        // 电话
+        ContactRow(
+            icon = Icons.Default.Phone,
+            info = phone,
+            highlightColor = highlightColor
+        )
+
         HorizontalDivider(
             color = Color.Gray.copy(alpha = 0.5f),
             modifier = Modifier.padding(horizontal = 40.dp)
         )
 
-        ContactRow(icon = Icons.Default.Email, info = email, accentColor = accentColor)
+        // 邮箱
+        ContactRow(
+            icon = Icons.Default.Email,
+            info = email,
+            highlightColor = highlightColor
+        )
+
         HorizontalDivider(
             color = Color.Gray.copy(alpha = 0.5f),
             modifier = Modifier.padding(horizontal = 40.dp)
         )
 
-        ContactRow(icon = Icons.Default.Share, info = social, accentColor = accentColor)
+        // 社交账号
+        ContactRow(
+            icon = Icons.Default.Share,
+            info = social,
+            highlightColor = highlightColor
+        )
     }
 }
 
+// 单行联系人样式（图标 + 文字）
 @Composable
 fun ContactRow(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     info: String,
-    accentColor: Color
+    highlightColor: Color
 ) {
     Row(
         modifier = Modifier
@@ -136,7 +162,7 @@ fun ContactRow(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = accentColor,
+            tint = highlightColor,
             modifier = Modifier.size(24.dp)
         )
 
@@ -150,8 +176,9 @@ fun ContactRow(
     }
 }
 
-@Preview(showBackground = true)
+// 预览（实验要求必须有）
+@Preview(showBackground = true, name = "名片预览")
 @Composable
-fun DefaultPreview() {
+fun BusinessCardPreview() {
     BusinessCardApp()
 }
